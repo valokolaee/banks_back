@@ -9,7 +9,7 @@ import User from '../models/user.model';
 import IUser from '../types/IUser';
 
 export class AuthController {
-  static async register(req: IRequest<IUser>, res: IResponse<IUser>) {
+  static async register(req: Request, res: Response) {
 
     try {
       const data = validate<Record<string, any>>(registerSchema, req.body);
@@ -34,21 +34,19 @@ export class AuthController {
     }
   }
 
-  static async login(req: IRequest, res: IResponse<IUser>) {
+  static async login(req: Request, res: Response) {
     try {
       const data = validate<Record<string, any>>(loginSchema, req.body);
       const result = await AuthService.login(data);
 
       const _user: IUser = { ...result.user, token: result.accessToken } as IUser;
-      // _user.token = result.accessToken;
-
+ 
 
       return res.status(200).json({
         success: true,
         message: 'Login successful',
         data: _user
-        // accessToken: result.accessToken,
-        // user: { ...result.user, accessToken: result.accessToken },
+ 
       });
     } catch (error: any) {
       return res.status(401).json({
@@ -58,21 +56,24 @@ export class AuthController {
     }
   }
 
-  static async getMe(req: IRequest, res: Response) {
+  static async getMe(req: Request, res: Response) {
     try {
-      const user = getUserByReq(req, res);
-
+      const user = getUserByReq(req,);
+      if (!!!user) {
+        return
+      }
       const role = user.role ? user.role.name : null;
 
       return res.status(200).json({
         success: true,
-        user: {
+        data: {
           id: user.id,
           username: user.username,
           email: user.email,
           clientType: user.clientType,
           role,
           roleId: user.roleId,
+          profileImage:user.profileImage
         },
       });
     } catch (error) {

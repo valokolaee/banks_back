@@ -11,7 +11,7 @@ export class UserController {
   static async updateProfileImage(req: Request, res: Response) {
     try {
       // const { userId } = req.params;
-      const userId = getUserByReq(req, res).id;
+      const userId = getUserByReq(req ).id;
 
       const { profileImage } = req.body;
 
@@ -22,7 +22,7 @@ export class UserController {
         });
       }
 
-      const success = await UserService.updateProfileImage(parseInt(userId), profileImage);
+      const success = await UserService.updateProfileImage(userId, profileImage);
 
       if (success) {
         res.json({
@@ -52,7 +52,7 @@ export class UserController {
   static async getUserProfile(req: Request, res: Response) {
 
     try {
-      const userId = getUserByReq(req, res).id;
+      const userId = getUserByReq(req ).id;
 
       if (userId === undefined) {
         res.status(400).json({
@@ -60,7 +60,7 @@ export class UserController {
           message: 'bad request'
         });
       }
-      const user = await UserService.getUserById(parseInt(userId));
+      const user = await UserService.getUserById(userId);
 
       if (user) {
         res.json({
@@ -86,11 +86,11 @@ export class UserController {
   /**
    * گرفتن اطلاعات کاربر
    */
-  static async getUserInvestments(req: Request, res: IResponse) {
+  static async getUserInvestments(req: Request, res: Response) {
 
     try {
 
-      const userId = getUserByReq(req, res).id;
+      const userId = getUserByReq(req ).id;
 
       if (userId === undefined) {
         res.status(400).json({
@@ -99,7 +99,7 @@ export class UserController {
         });
       }
 
-      const user = await UserService.getUserInvestmentsById(parseInt(userId));
+      const user = await UserService.getUserInvestmentsById(userId);
 
 
       if (user) {
@@ -130,7 +130,7 @@ export class UserController {
   static async getUserReferrals(req: Request, res: Response) {
     // res.send('getUserInvestments ok');
     try {
-      const userId = getUserByReq(req, res).id;
+      const userId = getUserByReq(req).id;
 
       if (userId === undefined) {
         res.status(400).json({
@@ -138,7 +138,7 @@ export class UserController {
           message: 'bad request'
         });
       }
-      const user = await UserService.getUserReferralsById(parseInt(userId));
+      const user = await UserService.getUserReferralsById(userId);
 
       if (user) {
         res.json({
@@ -167,7 +167,7 @@ export class UserController {
   static async getUserLoans(req: Request, res: Response) {
     // res.send('getUserInvestments ok');
     try {
-      const userId = getUserByReq(req, res).id;
+      const userId = getUserByReq(req).id;
 
       if (userId === undefined) {
         res.status(400).json({
@@ -175,7 +175,7 @@ export class UserController {
           message: 'bad request'
         });
       }
-      const user = await UserService.getUserLoansById(parseInt(userId));
+      const user = await UserService.getUserLoansById(userId);
 
       if (user) {
         res.json({
@@ -205,7 +205,7 @@ export class UserController {
   static async getBankAffiliations(req: Request, res: Response) {
     // res.send('getUserInvestments ok');
     try {
-      const userId = getUserByReq(req, res).id;
+      const userId = getUserByReq(req).id;
 
       if (userId === undefined) {
         res.status(400).json({
@@ -213,7 +213,7 @@ export class UserController {
           message: 'bad request'
         });
       }
-      const user = await UserService.getBankAffiliations(parseInt(userId));
+      const user = await UserService.getBankAffiliations(userId);
 
       if (user) {
         res.json({
@@ -245,10 +245,10 @@ export class UserController {
    */
   static async updateUserProfile(req: Request, res: Response) {
     try {
-      const userId = getUserByReq(req, res).id;
+      const userId = getUserByReq(req)!.id;
       const updateData = req.body;
 
-      const success = await UserService.updateUser(parseInt(userId), updateData);
+      const success = await UserService.updateUser(userId, updateData);
 
       if (success) {
         res.json({

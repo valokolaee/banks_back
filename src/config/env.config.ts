@@ -18,6 +18,18 @@ requiredVars.forEach((varName) => {
   }
 });
 
+
+export const config = {
+  uploadPath: process.env.UPLOAD_PATH || 'uploads',
+  maxFileSize: parseInt(process.env.MAX_FILE_SIZE || '10485760'), // 10MB in bytes
+  allowedMimeTypes: process.env.ALLOWED_MIME_TYPES?.split(',') || [
+    'image/jpeg',
+    'image/png',
+    // 'image/gif',
+    // 'application/pdf'
+  ]
+};
+
 export const JWT_SECRET = process.env.JWT_SECRET as string;
 export const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET as string;
 export const PORT = parseInt(process.env.PORT as string, 10) || 3000;

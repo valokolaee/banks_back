@@ -1,15 +1,12 @@
 // src/controllers/auth.controller.ts
 import { Response } from 'express';
-import IRequest from '../types/IRequest';
+import IRequest, { IResponse } from '../types/IRequest';
+import IUser from '../types/IUser';
 
 
-export default (req: IRequest, res: Response) => {
-  if (!req.user) {
-    return res.status(401).json({
-      success: false,
-     });
-  }
+export default (req: IRequest ): IUser => {
+ 
 
 
-  return req?.user.get({ plain: true });
+  return req!?.user!.get({ plain: true });
 }
