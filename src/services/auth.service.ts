@@ -2,16 +2,27 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../config/env.config';
 import { sequelize, models } from '../db';
+import { UserService } from './user.service';
+import { log } from 'console';
 
 export class AuthService {
   static async register(data: any) {
     const { username, email, password, clientType } = data;
     const hashedPassword = await bcrypt.hash(password, 10);
+    const _uName = await UserService.getUserByUserName(username)
+    const _uEmail = await UserService.getUserByEmail(email)
+
+    if (_uName?.id! > 0) {
+      return 'username already taken'
+    }
+    if (_uEmail?.id! > 0) {
+      return 'email already taken'
+    }
 
     const user = await models.User.create({
       username,
       email,
-      passwordHash: hashedPassword,
+      // passwordHash: hashedPassword,
       clientType,
       roleId: 1,
     });
@@ -38,7 +49,7 @@ export class AuthService {
       const user = await models.User.findByPk(decoded.id, {
         include: [{ model: models.Role, as: 'role' }]
       });
-      
+
       if (!user) return null;
       return user;
     } catch (error) {

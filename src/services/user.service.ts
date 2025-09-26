@@ -43,6 +43,35 @@ export class UserService {
       return null;
     }
   }
+  
+  /**
+   * @param username 
+   */
+  static async getUserByEmail(email: string) {
+    try {
+      const user = await models.User.findOne({ where: { email }}) 
+
+      return user;
+
+    } catch (error) {
+      console.error('❌ Error getting user:', error);
+      return null;
+    }
+  }
+  /**
+   * @param username 
+   */
+  static async getUserByUserName(username: string) {
+    try {
+      const user = await models.User.findOne({ where: { username }}) 
+
+      return user;
+
+    } catch (error) {
+      console.error('❌ Error getting user:', error);
+      return null;
+    }
+  }
   /**
    * @param userId 
    */

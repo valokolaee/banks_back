@@ -10,15 +10,23 @@ import IUser from '../types/IUser';
 
 export class AuthController {
   static async register(req: Request, res: Response) {
-
     try {
+
+      var _user:Partial <IUser> = {}
       const data = validate<Record<string, any>>(registerSchema, req.body);
       const result = await AuthService.register(data);
 
-
+      if (typeof result ==='string' ) {
+        return res.status(200).json({
+          success: false,
+          message: result,
+        });
+      } else {
+        
+         _user  = { ...result.user, token: result.accessToken } ;
+}
       // const _user: IUser = result.user as IUser;
       // _user.accessToken = result.accessToken;
-      const _user: IUser = { ...result.user, token: result.accessToken } as IUser;
 
       return res.status(201).json({
         success: true,
