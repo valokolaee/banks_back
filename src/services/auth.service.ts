@@ -22,7 +22,7 @@ export class AuthService {
     const user = await models.User.create({
       username,
       email,
-      // passwordHash: hashedPassword,
+      passwordHash: hashedPassword,
       clientType,
       roleId: 1,
     });
