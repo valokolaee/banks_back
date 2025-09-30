@@ -84,11 +84,12 @@ export class ImageController {
 
   // Get single image by filename
   static async getImage(req: Request, res: Response): Promise<void> {
+    console.log(req.url);
     
     try {
 
       const filename = req.params.filename;
-      const folderPath = (req.url as string) || defaultFolder;
+      const folderPath = (req.url.split('?')[0] as string) || defaultFolder;
       const absolutePath = path.resolve(folderPath);
       // const imagePath = path.join(folderPath, filename);
       const imagePath = path.join(defaultFolder, folderPath,);

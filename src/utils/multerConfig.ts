@@ -9,7 +9,7 @@ import { TAllowedMimes, TImageFor } from '../config/constants';
 // Configure storage
 const storage = (imageFor?: TImageFor) => multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    cb(null, `uploads/${imageFor}`);
   },
   filename: (req: IRequest, file, cb) => {
     let _filename: string = ''

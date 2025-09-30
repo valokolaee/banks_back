@@ -4,6 +4,7 @@ import { UserService } from '../services/user.service';
 import getUserByReq from '../utils/getUserByReq';
 import { IResponse } from '../types/IRequest';
 import { UploadResponse } from '../types/upload';
+import { avatarSt } from '../config/constants';
 
 export class UserController {
   /**
@@ -255,7 +256,7 @@ export class UserController {
 // console.log(req.file);
 
       // Construct file URL
-      const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${filename}`;
+      const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${avatarSt}/${filename}`;
       const success = await UserService.updateUser(userId, {profileImage:fileUrl});
 
       const response: UploadResponse = {
