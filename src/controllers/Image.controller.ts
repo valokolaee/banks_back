@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
- export interface ImageInfo {
+export interface ImageInfo {
   filename: string;
   path: string;
   url: string;
@@ -31,7 +31,7 @@ export interface ApiResponse {
 
 const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg'];
 // const defaultFolder = '../../uploads';
-const defaultFolder =process.env.defaultFolder||''
+const defaultFolder = process.env.defaultFolder || ''
 // const defaultFolder = '/Volumes/second/proj/kazemian/nd/uploads';
 
 export class ImageController {
@@ -40,9 +40,9 @@ export class ImageController {
   // Get all images from a folder
   static async getImages(req: Request, res: Response): Promise<void> {
     console.log(req);
-    
+
     try {
-      const folderPath = (req.query.folder as string) ||  defaultFolder;
+      const folderPath = (req.query.folder as string) || defaultFolder;
       const absolutePath = path.resolve(folderPath);
 
       // Security check: prevent directory traversal
@@ -59,7 +59,7 @@ export class ImageController {
 
       // Read directory and filter image files
       const files = fs.readdirSync(absolutePath);
-      
+
       const images: ImageInfo[] = files
         .filter(file => isImageFile(file))
         .map(file => ({
@@ -84,13 +84,16 @@ export class ImageController {
 
   // Get single image by filename
   static async getImage(req: Request, res: Response): Promise<void> {
+    
     try {
-      const { filename } = req.params;
-      const folderPath = (req.query.folder as string) ||  defaultFolder;
-      const absolutePath = path.resolve(folderPath);
-      const imagePath = path.join(folderPath, filename);
 
-// console.log(imagePath);
+      const filename = req.params.filename;
+      const folderPath = (req.url as string) || defaultFolder;
+      const absolutePath = path.resolve(folderPath);
+      // const imagePath = path.join(folderPath, filename);
+      const imagePath = path.join(defaultFolder, folderPath,);
+
+      // console.log(imagePath);
 
       // Security checks
       if (!isValidPath(imagePath)) {
@@ -122,7 +125,7 @@ export class ImageController {
   // Get images with pagination
   static async getImagesPaginated(req: Request, res: Response): Promise<void> {
     try {
-      const folderPath = (req.query.folder as string) ||  defaultFolder;
+      const folderPath = (req.query.folder as string) || defaultFolder;
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const absolutePath = path.resolve(folderPath);
@@ -140,13 +143,13 @@ export class ImageController {
 
       // Read and filter images
       const files = fs.readdirSync(absolutePath);
-      
+
       const allImages: ImageInfo[] = files
         .filter(file => isImageFile(file))
         .map(file => {
           const filePath = path.join(absolutePath, file);
           const stats = fs.statSync(filePath);
-          
+
           return {
             filename: file,
             path: `/images/${file}`,
@@ -187,13 +190,13 @@ export class ImageController {
 
 
 
-  // Helper method to validate file path
-const isValidPath=(filePath: string): boolean =>{
+// Helper method to validate file path
+const isValidPath = (filePath: string): boolean => {
   return filePath.startsWith(process.cwd());
 }
 
-  // Helper method to check if file is an image
-  const isImageFile=(filename: string): boolean=> {
+// Helper method to check if file is an image
+const isImageFile = (filename: string): boolean => {
   const ext = path.extname(filename).toLowerCase();
   return imageExtensions.includes(ext);
 }

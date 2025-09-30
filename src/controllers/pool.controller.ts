@@ -1,6 +1,7 @@
 // src/controllers/pool.controller.ts
 import { Request, Response } from 'express';
 import { PoolService } from '../services/pool.service';
+import getUserByReq from '../utils/getUserByReq';
 
 export class PoolController {
   static async getAllPools(req: Request, res: Response) {
@@ -84,9 +85,12 @@ export class PoolController {
 
   static async updatePool(req: Request, res: Response) {
     try {
-      const { id } = req.params;
-      const poolId = parseInt(id, 10);
-      const userId = (req as any).user?.id;
+      
+      const  id  = req?.body?.id;
+      const poolId =  parseInt(id.toString(), 10);
+      const userId = getUserByReq(req).id
+      const pool = await PoolService.getPoolById(poolId);
+      console.log(req.body,pool);
 
       if (isNaN(poolId)) {
         return res.status(400).json({
