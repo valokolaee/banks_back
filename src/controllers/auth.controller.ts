@@ -7,26 +7,25 @@ import IRequest, { IResponse } from '../types/IRequest';
 import getUserByReq from '../utils/getUserByReq';
 import User from '../models/user.model';
 import IUser from '../types/IUser';
+import { date } from 'joi';
 
 export class AuthController {
   static async register(req: Request, res: Response) {
     try {
 
-      var _user:Partial <IUser> = {}
+      var _user: Partial<IUser> = {}
       const data = validate<Record<string, any>>(registerSchema, req.body);
       const result = await AuthService.register(data);
 
-      if (typeof result ==='string' ) {
+      if (typeof result === 'string') {
         return res.status(200).json({
           success: false,
           message: result,
         });
       } else {
-        
-         _user  = { ...result.user, token: result.accessToken } ;
-}
-      // const _user: IUser = result.user as IUser;
-      // _user.accessToken = result.accessToken;
+
+        _user = { ...result.user, token: result.accessToken, passwordHash: undefined };
+      }
 
       return res.status(201).json({
         success: true,
@@ -48,13 +47,13 @@ export class AuthController {
       const result = await AuthService.login(data);
 
       const _user: IUser = { ...result.user, token: result.accessToken } as IUser;
- 
+
 
       return res.status(200).json({
         success: true,
         message: 'Login successful',
         data: _user
- 
+
       });
     } catch (error: any) {
       return res.status(401).json({
@@ -74,15 +73,16 @@ export class AuthController {
 
       return res.status(200).json({
         success: true,
-        data: {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          clientType: user.clientType,
-          role,
-          roleId: user.roleId,
-          profileImage:user.profileImage
-        },
+        data: user
+        // data: {
+        //   id: user.id,
+        //   username: user.username,
+        //   email: user.email,
+        //   clientType: user.clientType,
+        //   role,
+        //   roleId: user.roleId,
+        //   profileImage:user.profileImage
+        // },
       });
     } catch (error) {
       return res.status(500).json({

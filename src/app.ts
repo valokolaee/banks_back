@@ -1,26 +1,27 @@
-import express from 'express';
 import cors from 'cors';
+import express from 'express';
+import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import multer from 'multer'
-const https = require('https');
-const fs = require('fs');
 import corsOptions from './config/cors.options';
 import { sequelize } from './db';
+const https = require('https');
+const fs = require('fs');
 
 // Routes
 import authRoutes from './routes/auth.routes';
-import uploadRoutes from './routes/upload.routes';
-import databaseRoutes from './routes/database.routes';
-import poolRoutes from './routes/pool.routes';
 import bankRoutes from './routes/bank.routes';
-import userRoutes from './routes/user.routes';
+import databaseRoutes from './routes/database.routes';
 import imagesRoutes from './routes/images.rout';
+import poolRoutes from './routes/pool.routes';
+import uploadRoutes from './routes/upload.routes';
+import userRoutes from './routes/user.routes';
 
 
 // Middleware
-import { logger } from './middleware/logger.middleware';
+import { dirList } from './config/constants';
 import { errorHandler } from './middleware/error.middleware';
+import { logger } from './middleware/logger.middleware';
 
 
 
@@ -88,11 +89,19 @@ app.use((error: any, req: express.Request, res: express.Response, next: express.
   });
 });
 
+
+
+/*creating dirs */
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
+dirList.forEach((el) => {
+  const avatarDir = uploadsDir.concat('/', el)
+  if (!fs.existsSync(avatarDir)) {
+    fs.mkdirSync(avatarDir, { recursive: true });
+  }
+
+})
+
 
 
 // Error handling middleware

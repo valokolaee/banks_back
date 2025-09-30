@@ -9,7 +9,7 @@ const router = Router();
 router.get('/', PoolController.getAllPools);
 router.get('/:id', PoolController.getPoolById);
 router.post('/', authenticate, PoolController.createPool);
-router.put('/:id', authenticate, PoolController.updatePool);
+router.put('/', authenticate, PoolController.updatePool);
 router.delete('/:id', authenticate, PoolController.deletePool);
 
 // Mount pool service routes
