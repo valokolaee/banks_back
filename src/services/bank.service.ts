@@ -62,6 +62,7 @@ export class BankService {
       throw new Error(`Database error: ${error}`);
     }
   }
+  // 
 
   static async updateBank(id: number, data: UpdateBankData, userId?: number) {
     try {
@@ -71,9 +72,9 @@ export class BankService {
         return null;
       }
   
-      if (userId && bank.userId !== userId) {
-        return null;
-      }
+      // if (userId && bank.userId !== userId) {
+      //   return null;
+      // }
   
       await bank.update({
         ...data,

@@ -4,7 +4,7 @@ import { UserService } from '../services/user.service';
 import getUserByReq from '../utils/getUserByReq';
 import { IResponse } from '../types/IRequest';
 import { UploadResponse } from '../types/upload';
-import { avatarSt } from '../config/constants';
+import { avatarSt, logoSt } from '../config/constants';
 
 export class UserController {
   /**
@@ -240,7 +240,7 @@ export class UserController {
 
   // Single file upload
   static updateUserAvatar = async (req: Request, res: Response): Promise<void> => {
-          const userId = getUserByReq(req)!.id;
+    const userId = getUserByReq(req)!.id;
     try {
       if (!req.file) {
         const response: UploadResponse = {
@@ -253,11 +253,57 @@ export class UserController {
       }
 
       const { filename, originalname, size, mimetype, path: filePath } = req.file;
-// console.log(req.file);
+      // console.log(req.file);
 
       // Construct file URL
       const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${avatarSt}/${filename}`;
-      const success = await UserService.updateUser(userId, {profileImage:fileUrl});
+      const success = await UserService.updateUser(userId, { profileImage: fileUrl });
+
+      const response: UploadResponse = {
+        success: true,
+        message: 'File uploaded successfully',
+        data: {
+          filename,
+          originalName: originalname,
+          size,
+          mimetype,
+          url: fileUrl,
+          filePath
+        }
+      };
+
+      res.status(200).json(response);
+    } catch (error) {
+      const response: UploadResponse = {
+        success: false,
+        message: 'Upload failed',
+        error: error instanceof Error ? error.message : 'Unknown error occurred'
+      };
+      res.status(500).json(response);
+    }
+  };
+
+
+  // Single file upload
+  static updateUserLogo = async (req: Request, res: Response): Promise<void> => {
+    const userId = getUserByReq(req)!.id;
+    try {
+      if (!req.file) {
+        const response: UploadResponse = {
+          success: false,
+          message: 'No file uploaded',
+          error: 'Please select a file to upload'
+        };
+        res.status(400).json(response);
+        return;
+      }
+
+      const { filename, originalname, size, mimetype, path: filePath } = req.file;
+      // console.log(req.file);
+
+      // Construct file URL
+      const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${logoSt}/${filename}`;
+      const success = await UserService.updateUser(userId, { profileImage: fileUrl });
 
       const response: UploadResponse = {
         success: true,

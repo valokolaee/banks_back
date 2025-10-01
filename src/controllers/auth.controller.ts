@@ -1,6 +1,7 @@
 // src/controllers/auth.controller.ts
 import { Request, Response } from 'express';
 import { AuthService } from '../services/auth.service';
+import MailService from '../services/mailer.service';
 import { registerSchema, loginSchema } from '../dtos/auth.dto';
 import { validate } from '../utils/validator.utils';
 import IRequest, { IResponse } from '../types/IRequest';
@@ -88,6 +89,25 @@ export class AuthController {
       return res.status(500).json({
         success: false,
         message: 'Failed to fetch profile',
+      });
+    }
+  }
+
+
+  static async sendMail(req: Request, res: Response) {
+    try {
+
+      MailService()
+
+      return res.status(201).json({
+        success: true,
+        message: 'User registered successfully',
+
+      });
+    } catch (error: any) {
+      return res.status(400).json({
+        success: false,
+        message: error.message,
       });
     }
   }

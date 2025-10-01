@@ -9,7 +9,7 @@ const router = Router();
 router.get('/', BankController.getAllBanks);
 router.get('/:id', BankController.getBankById);
 router.post('/', authenticate, BankController.createBank);
-router.put('/:id', authenticate, BankController.updateBank);
+router.put('/', authenticate, BankController.updateBank);
 router.delete('/:id', authenticate, BankController.deleteBank);
 
 // Mount bank service routes

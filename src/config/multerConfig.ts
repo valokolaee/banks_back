@@ -1,10 +1,10 @@
 import multer from 'multer';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import getUserByReq from './getUserByReq';
+import getUserByReq from '../utils/getUserByReq';
 import IRequest from '../types/IRequest';
 import IUser from '../types/IUser';
-import { TAllowedMimes, TImageFor } from '../config/constants';
+import { TAllowedMimes, TImageFor } from './constants';
 
 // Configure storage
 const storage = (imageFor?: TImageFor) => multer.diskStorage({
@@ -16,7 +16,9 @@ const storage = (imageFor?: TImageFor) => multer.diskStorage({
     let _objectID = -1
     switch (imageFor) {
       case 'avatar':
+      case 'logo':
         _objectID = getUserByReq(req)?.id
+        _filename = `${imageFor}_${_objectID}`
 
         break;
 
@@ -25,7 +27,6 @@ const storage = (imageFor?: TImageFor) => multer.diskStorage({
     }
 
 
-    _filename = `${imageFor}_${_objectID}`
 
     // console.log('hostname', req.baseUrl);
 
@@ -40,7 +41,7 @@ const storage = (imageFor?: TImageFor) => multer.diskStorage({
 // File filter
 const fileFilter = (allowedMimes: TAllowedMimes[]) => (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
 
-  
+
   const am = allowedMimes as string[]
   if (am.includes(file.mimetype)) {
     cb(null, true);

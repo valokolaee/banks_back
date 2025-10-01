@@ -1,7 +1,7 @@
 // src/routes/uploadRoutes.ts
 import { Router } from 'express';
 import { UploadController } from '../controllers/upload.controller';
-import { upload, uploadMultiple } from '../utils/multerConfig';
+import { upload, uploadMultiple } from '../config/multerConfig';
 import { authenticate } from '../middleware/auth.middleware';
 import { UserController } from '../controllers/user.controller';
 

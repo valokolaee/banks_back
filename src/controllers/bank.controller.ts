@@ -3,12 +3,13 @@ import { Request, Response } from 'express';
 import { BankService } from '../services/bank.service';
 
 export class BankController {
+
   static async getAllBanks(req: Request, res: Response) {
     try {
       const banks = await BankService.getAllBanks();
       return res.status(200).json({
         success: true,
-         banks,
+         data:banks,
       });
     } catch (error: any) {
       console.error('Error in getAllBanks:', error);
@@ -82,8 +83,12 @@ export class BankController {
   }
 
   static async updateBank(req: Request, res: Response) {
+    // console.log(req);
+    
     try {
-      const { id } = req.params;
+      // const { id } = req.params;
+      const id = req?.body?.id;
+
       const bankId = parseInt(id, 10);
       const userId = (req as any).user?.id;
 

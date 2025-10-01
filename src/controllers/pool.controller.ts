@@ -90,7 +90,7 @@ export class PoolController {
       const poolId =  parseInt(id.toString(), 10);
       const userId = getUserByReq(req).id
       const pool = await PoolService.getPoolById(poolId);
-      console.log(req.body,pool);
+      // console.log(req.body,pool);
 
       if (isNaN(poolId)) {
         return res.status(400).json({

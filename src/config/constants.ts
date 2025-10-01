@@ -1,9 +1,10 @@
-export type TImageFor = 'avatar' | 'pool' | 'bank'
+export type TImageFor = 'avatar' | 'pool' | 'bank'|'logo'
 
 export const avatarSt = `avatar`
 export const poolsSt = `pool`
 export const banksSt = `bank`
-export const dirList: TImageFor[] = [avatarSt, poolsSt, banksSt]
+export const logoSt = `logo`
+export const dirList: TImageFor[] = [avatarSt, poolsSt, banksSt,logoSt]
 
 
 

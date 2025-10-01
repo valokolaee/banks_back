@@ -39,8 +39,7 @@ export class ImageController {
 
   // Get all images from a folder
   static async getImages(req: Request, res: Response): Promise<void> {
-    console.log(req);
-
+ 
     try {
       const folderPath = (req.query.folder as string) || defaultFolder;
       const absolutePath = path.resolve(folderPath);
@@ -84,7 +83,7 @@ export class ImageController {
 
   // Get single image by filename
   static async getImage(req: Request, res: Response): Promise<void> {
-    console.log(req.url);
+    // console.log(req.url);
     
     try {
 
