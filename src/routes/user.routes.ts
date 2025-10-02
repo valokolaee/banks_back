@@ -16,6 +16,7 @@ router.put('/profile-image', authenticate, UserController.updateProfileImage);
 router.put('/avatar', authenticate, upload('avatar', ['image/jpeg', 'image/png',]).single('file'), UserController.updateUserAvatar);
 router.put('/logo', authenticate, upload('logo', ['image/jpeg', 'image/png',]).single('file'), UserController.updateUserLogo);
 
+
 router.put('/', authenticate, UserController.updateUserProfile);
 
 
