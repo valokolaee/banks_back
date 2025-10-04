@@ -33,7 +33,14 @@ export class AuthService {
 
   static async login(data: any) {
     const { email, password } = data;
-    const user = await models.User.findOne({ where: { email } });
+    console.log(data);
+    var user = await models.User.findOne({ where: { email } });
+
+    
+    // in order to make login possible with username too
+    if (!user) { user = await models.User.findOne({ where: { username: email } }); }
+
+
     if (!user) throw new Error('Invalid credentials');
 
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);

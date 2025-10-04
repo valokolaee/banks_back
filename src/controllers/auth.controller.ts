@@ -43,8 +43,11 @@ export class AuthController {
   }
 
   static async login(req: Request, res: Response) {
+    // console.log(req.);
+    
     try {
-      const data = validate<Record<string, any>>(loginSchema, req.body);
+      // const data = validate<Record<string, any>>(loginSchema, req.body);
+      const data = req.body;
       const result = await AuthService.login(data);
 
       const _user: IUser = { ...result.user, token: result.accessToken } as IUser;
