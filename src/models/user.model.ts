@@ -1,4 +1,3 @@
-// src/models/user.model.ts
 import { Model } from 'sequelize';
 
 export default class User extends Model {
@@ -6,21 +5,22 @@ export default class User extends Model {
   public username!: string;
   public email!: string;
   public passwordHash!: string;
-  public roleId!: number;
-  public clientType!: 'individual' | 'financial_entities' | 'business';
-  public referralCode!: string | null;
-  public referrer!: number | null;
-  public rankId!: number | null;
+  public phone!: string | null;
+  public firstName!: string | null;
+  public lastName!: string | null;
+  // public roleId!: number;
+  public profileImageUrl!: string | null;
   public logoUrl!: string | null;
-  public profileImage!: string | null;
-  public csvUrl!: string | null;
+  public isActive!: boolean;
+  public emailVerified!: boolean;
+  public phoneVerified!: boolean;
+  public lastLogin!: Date | null;
   public createdAt!: Date;
+  public updatedAt!: Date | null;
 
   public readonly role?: any;
-  public readonly rank?: any;
-  public readonly referredUsers?: any[];
-  public readonly pools?: any[];
-  public readonly banks?: any[];
+  public readonly sessions?: any[];
+  public readonly chats?: any[];
 
   public static initModel(sequelize: any): typeof User {
     return User.init(
@@ -45,51 +45,68 @@ export default class User extends Model {
           allowNull: false,
           field: 'password_hash',
         },
-        roleId: {
-          type: 'INT',
-          allowNull: false,
-          field: 'role_id',
+        phone: {
+          type: 'VARCHAR(20)',
+          allowNull: true,
         },
-        clientType: {
-          type: 'ENUM("individual", "financial_entities", "business")',
-          allowNull: false,
-          field: 'client_type',
+        firstName: {
+          type: 'VARCHAR(100)',
+          allowNull: true,
+          field: 'first_name',
         },
-        referralCode: {
+        lastName: {
+          type: 'VARCHAR(100)',
+          allowNull: true,
+          field: 'last_name',
+        },
+        // roleId: {
+        //   type: 'INT',
+        //   allowNull: true,
+        //   field: 'role_id',
+        // },
+        profileImageUrl: {
           type: 'VARCHAR(255)',
           allowNull: true,
-          unique: true,
-          field: 'referral_code',
-        },
-        referrer: {
-          type: 'INT',
-          allowNull: true,
-          field: 'referred_by',
-        },
-        rankId: {
-          type: 'INT',
-          allowNull: true,
-          field: 'rank_id',
+          field: 'profile_image_url',
         },
         logoUrl: {
           type: 'VARCHAR(255)',
           allowNull: true,
           field: 'logo_url',
         },
-        profileImage: {
-          type: 'VARCHAR(255)',
-          allowNull: true,
-          field: 'profile_image',
+        isActive: {
+          type: 'BOOLEAN',
+          allowNull: false,
+          defaultValue: true,
+          field: 'is_active',
         },
-        csvUrl: {
-          type: 'VARCHAR(255)',
+        emailVerified: {
+          type: 'BOOLEAN',
+          allowNull: false,
+          defaultValue: false,
+          field: 'email_verified',
+        },
+        phoneVerified: {
+          type: 'BOOLEAN',
+          allowNull: false,
+          defaultValue: false,
+          field: 'phone_verified',
+        },
+        lastLogin: {
+          type: 'DATETIME',
           allowNull: true,
-          field: 'csv_url',
+          field: 'last_login',
         },
         createdAt: {
           type: 'DATETIME',
+          allowNull: false,
           defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
           field: 'created_at',
+        },
+        updatedAt: {
+          type: 'DATETIME',
+          allowNull: true,
+          field: 'updated_at',
         },
       },
       {
@@ -102,36 +119,19 @@ export default class User extends Model {
   }
 
   public static associate(models: any) {
-    User.belongsTo(models.Role, {
-      foreignKey: 'roleId',
-      as: 'role',
-    });
+    // User.belongsTo(models.Role, {
+    //   foreignKey: 'roleId',
+    //   as: 'role',
+    // });
 
-    User.belongsTo(models.Rank, {
-      foreignKey: 'rankId',
-      as: 'rank',
-    });
-
-    User.hasMany(models.ReferralRelationship, {
-      foreignKey: 'referrer',
-      as: 'referredUsers',
-    });
-
-    User.hasMany(models.Pool, {
+    User.hasMany(models.UserSession, {
       foreignKey: 'userId',
-      as: 'pools',
+      as: 'sessions',
     });
 
-    User.hasMany(models.Bank, {
+    User.hasMany(models.Chat, {
       foreignKey: 'userId',
-      as: 'banks',
-    });
-
-    User.belongsToMany(models.Permission, {
-      through: models.UserPermission,
-      foreignKey: 'userId',
-      otherKey: 'permissionId',
-      as: 'permissions',
+      as: 'chats',
     });
   }
 }

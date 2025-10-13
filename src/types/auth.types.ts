@@ -3,7 +3,7 @@ export interface RegisterRequest {
   username: string;
   email: string;
   password: string;
-  clientType: 'individual' | 'financial_entities' | 'business';
+
 }
 
 export interface LoginRequest {

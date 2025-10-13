@@ -10,13 +10,13 @@ const fs = require('fs');
 
 // Routes
 import authRoutes from './routes/auth.routes';
-import bankRoutes from './routes/bank.routes';
 import databaseRoutes from './routes/database.routes';
 import imagesRoutes from './routes/images.rout';
-import poolRoutes from './routes/pool.routes';
 import uploadRoutes from './routes/upload.routes';
 import userRoutes from './routes/user.routes';
-
+import chatRoutes from './routes/chat.routes';
+import contentRoutes from './routes/content.routes';
+ 
 
 // Middleware
 import { dirList } from './config/constants';
@@ -48,9 +48,9 @@ app.use('/uploads', imagesRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/db', databaseRoutes);
-app.use('/api/pools', poolRoutes);
-app.use('/api/banks', bankRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/chats', chatRoutes);
+app.use('/api/content', contentRoutes);
 
 // Serve static files
 app.use(express.static(publicPath));
@@ -135,6 +135,7 @@ https.createServer(options, app).listen(PORT, async () => {
     console.log(`Backend URL: https://w.bankon.click`);
   } catch (error) {
     console.error('Unable to connect to the database:', error);
+    
   }
 }
 

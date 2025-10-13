@@ -7,7 +7,7 @@ import { log } from 'console';
 
 export class AuthService {
   static async register(data: any) {
-    const { username, email, password, clientType } = data;
+    const { username, email, password } = data;
     const hashedPassword = await bcrypt.hash(password, 10);
     const _uName = await UserService.getUserByUserName(username)
     const _uEmail = await UserService.getUserByEmail(email)
@@ -23,11 +23,10 @@ export class AuthService {
       username,
       email,
       passwordHash: hashedPassword,
-      clientType,
-      roleId: 1,
+       roleId: 1,
     });
 
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, {  });
     return { accessToken: token, user: user.get({ plain: true }) };
   }
 
@@ -36,7 +35,7 @@ export class AuthService {
     console.log(data);
     var user = await models.User.findOne({ where: { email } });
 
-    
+
     // in order to make login possible with username too
     if (!user) { user = await models.User.findOne({ where: { username: email } }); }
 
@@ -46,7 +45,7 @@ export class AuthService {
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) throw new Error('Invalid credentials');
 
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { });
     return { accessToken: token, user: user.get({ plain: true }) };
   }
 

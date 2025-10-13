@@ -13,7 +13,7 @@ export class UserController {
   static async updateProfileImage(req: Request, res: Response) {
     try {
       // const { userId } = req.params;
-      const userId = getUserByReq(req ).id;
+      const userId = getUserByReq(req).id;
 
       const { profileImage } = req.body;
 
@@ -54,7 +54,7 @@ export class UserController {
   static async getUserProfile(req: Request, res: Response) {
 
     try {
-      const userId = getUserByReq(req ).id;
+      const userId = getUserByReq(req).id;
 
       if (userId === undefined) {
         res.status(400).json({
@@ -92,7 +92,7 @@ export class UserController {
 
     try {
 
-      const userId = getUserByReq(req ).id;
+      const userId = getUserByReq(req).id;
 
       if (userId === undefined) {
         res.status(400).json({
@@ -303,7 +303,7 @@ export class UserController {
 
       // Construct file URL
       const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${logoSt}/${filename}`;
-      const success = await UserService.updateUser(userId, { profileImage: fileUrl });
+      const success = await UserService.updateUser(userId, { logoUrl: fileUrl });
 
       const response: UploadResponse = {
         success: true,

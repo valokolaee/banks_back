@@ -23,7 +23,7 @@ async function resetDatabase() {
     console.log('? FOREIGN_KEY_CHECKS enabled');
 
     // Sync database schema
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ force: true });
     console.log('? Database synchronized');
 
     // Seed roles - Added 'agent' role
@@ -54,7 +54,6 @@ async function resetDatabase() {
         username: 'admin',
         email: 'admin@michael.com',
         passwordHash: hashedPassword,
-        clientType: 'individual',
         roleId: adminRole.id,
         referralCode: 'ADMIN123',
       },

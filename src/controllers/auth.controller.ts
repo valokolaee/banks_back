@@ -35,6 +35,8 @@ export class AuthController {
 
       });
     } catch (error: any) {
+      console.log(error);
+      
       return res.status(400).json({
         success: false,
         message: error.message,
@@ -50,14 +52,13 @@ export class AuthController {
       const data = req.body;
       const result = await AuthService.login(data);
 
-      const _user: IUser = { ...result.user, token: result.accessToken } as IUser;
+      const _user: IUser = { ...result.user, token: result.accessToken,passwordHash:undefined } as IUser;
 
 
       return res.status(200).json({
         success: true,
         message: 'Login successful',
         data: _user
-
       });
     } catch (error: any) {
       return res.status(401).json({
@@ -78,15 +79,7 @@ export class AuthController {
       return res.status(200).json({
         success: true,
         data: user
-        // data: {
-        //   id: user.id,
-        //   username: user.username,
-        //   email: user.email,
-        //   clientType: user.clientType,
-        //   role,
-        //   roleId: user.roleId,
-        //   profileImage:user.profileImage
-        // },
+ 
       });
     } catch (error) {
       return res.status(500).json({

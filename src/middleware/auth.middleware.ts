@@ -26,7 +26,7 @@ export const authenticate = async (
 
     // Find user
     const user = await models.User.findByPk(decoded.id, {
-      include: [{ model: models.Role, as: 'role' }]
+      // include: [{ model: models.Role, as: 'role' }]
     });
 
     if (!user) {

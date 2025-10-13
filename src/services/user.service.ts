@@ -33,7 +33,7 @@ export class UserService {
   static async getUserById(userId: number) {
     try {
       const user = await models.User.findByPk(userId, {
-        attributes: ['id', 'username', 'email', 'profileImage', 'clientType', 'roleId']
+        attributes: ['id', 'username', 'email', 'profileImage', 'roleId']
       });
 
       return user;
@@ -78,7 +78,7 @@ export class UserService {
   static async getUserInvestmentsById(userId: number) {
     try {
       const user = await models.User.findByPk(userId, {
-        attributes: ['id', 'username', 'email', 'profileImage', 'clientType', 'roleId']
+        attributes: ['id', 'username', 'email', 'profileImage',  'roleId']
       });
       return []//'investments under construction'
       return user;
@@ -96,7 +96,7 @@ export class UserService {
   static async getUserReferralsById(userId: number) {
     try {
       const user = await models.User.findByPk(userId, {
-        attributes: ['id', 'username', 'email', 'profileImage', 'clientType', 'roleId']
+        attributes: ['id', 'username', 'email', 'profileImage',  'roleId']
       });
       return 'referrals under construction'
       return user;
@@ -113,7 +113,7 @@ export class UserService {
   static async getUserLoansById(userId: number) {
     try {
       const user = await models.User.findByPk(userId, {
-        attributes: ['id', 'username', 'email', 'profileImage', 'clientType', 'roleId']
+        attributes: ['id', 'username', 'email', 'profileImage',  'roleId']
       });
       return 'Loans under construction'
       return user;
@@ -131,7 +131,7 @@ export class UserService {
   static async getBankAffiliations(userId: number) {
     try {
       const user = await models.User.findByPk(userId, {
-        attributes: ['id', 'username', 'email', 'profileImage', 'clientType', 'roleId']
+        attributes: ['id', 'username', 'email', 'profileImage',   'roleId']
       });
       return 'bankAffiliations under construction'
       return user;
@@ -167,6 +167,5 @@ interface User {
   email?: string;
   profileImage?: string;
   logoUrl?: string;
-  clientType?: 'individual' | 'financial_entities' | 'business';
   roleId?: number;
 }

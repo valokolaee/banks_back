@@ -3,6 +3,7 @@ import { Options } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config();
 const dbConfig: Options = {
+  // force: true,
   dialect: process.env.DB_DIALECT as any,
   host: process.env.DB_HOST,
   username: process.env.DB_USER,
